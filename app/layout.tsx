@@ -3,8 +3,10 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { CLUB_CONFIG } from "@/config/club";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,9 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Reservas | Lavalle Pádel · CourtOS",
-  description:
-    "Solicitá tu reserva de cancha en Lavalle Pádel de forma rápida y simple con CourtOS.",
+  title: `Reservas | ${CLUB_CONFIG.name} · CourtOS`,
+  description: `Solicitá tu reserva de cancha en ${CLUB_CONFIG.name} de forma rápida y simple con CourtOS.`,
   applicationName: "CourtOS",
 };
 
@@ -34,7 +35,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
-      <body className="min-h-full flex flex-col">
+      <body
+        className="min-h-full flex flex-col"
+        style={{ WebkitTextSizeAdjust: "100%" }}
+      >
         <ThemeProvider>
           {children}
         </ThemeProvider>

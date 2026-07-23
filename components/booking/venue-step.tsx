@@ -1,6 +1,7 @@
 import { ArrowLeft, Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { CLUB_CONFIG } from "@/config/club";
 import { cn } from "@/lib/utils";
 import type { VenueStepProps } from "@/types/reservation";
 
@@ -9,12 +10,13 @@ export function VenueStep({
   selectedVenueId,
   onSelect,
   onBack,
+  onContinue,
 }: VenueStepProps) {
   return (
     <div>
       <header>
         <p className="text-sm font-medium text-muted-foreground">
-          Lavalle Pádel
+          {CLUB_CONFIG.name}
         </p>
         <h2
           id="venue-step-title"
@@ -88,20 +90,13 @@ export function VenueStep({
         </Button>
         <Button
           type="button"
-          disabled
-          aria-describedby="venue-next-step-note"
+          disabled={!selectedVenueId}
+          onClick={onContinue}
           className="h-12 rounded-xl text-base"
         >
           Continuar
         </Button>
       </div>
-
-      <p
-        id="venue-next-step-note"
-        className="mt-4 text-center text-xs leading-5 text-muted-foreground"
-      >
-        La selección de fecha será el próximo paso a implementar.
-      </p>
     </div>
   );
 }

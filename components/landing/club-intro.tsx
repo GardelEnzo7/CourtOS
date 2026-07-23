@@ -1,7 +1,7 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 
-import { LAVALLE_CONFIG } from "@/config/lavalle";
 import { Button } from "@/components/ui/button";
+import { CLUB_CONFIG } from "@/config/club";
 
 import { Logo } from "./Logo";
 
@@ -22,7 +22,7 @@ export function ClubIntro({ onSchedule }: ClubIntroProps) {
         <Logo />
 
         <p className="mt-4 text-sm font-medium tracking-wide text-muted-foreground">
-          Lavalle Pádel
+          {CLUB_CONFIG.name}
         </p>
 
         <h1
@@ -67,7 +67,7 @@ export function ClubIntro({ onSchedule }: ClubIntroProps) {
         </Button>
 
         <a
-          href={LAVALLE_CONFIG.instagramUrlPlaceholder}
+          href={CLUB_CONFIG.instagramUrlPlaceholder}
           target="_blank"
           rel="noreferrer"
           className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-base font-medium text-foreground transition-colors hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"

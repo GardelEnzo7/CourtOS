@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { LAVALLE_CONFIG } from "@/config/lavalle";
+import { CLUB_CONFIG } from "@/config/club";
+import { generateNextCalendarDays } from "@/lib/date-utils";
 import type {
   CustomerDetails,
   CustomerField,
@@ -13,6 +14,7 @@ import type {
 } from "@/types/reservation";
 
 import { CustomerDetailsStep } from "./customer-details-step";
+import { DateStep } from "./date-step";
 import { ReservationProgress } from "./reservation-progress";
 import { VenueStep } from "./venue-step";
 
@@ -23,7 +25,19 @@ type MotionContext = {
   reduceMotion: boolean;
 };
 
-const TOTAL_STEPS = 2;
+const TOTAL_STEPS = 3;
+
+const STEP_NUMBERS: Record<ReservationStep, number> = {
+  customer: 1,
+  venue: 2,
+  date: 3,
+};
+
+const STEP_TITLE_IDS: Record<ReservationStep, string> = {
+  customer: "customer-details-title",
+  venue: "venue-step-title",
+  date: "date-step-title",
+};
 
 const INITIAL_DRAFT: ReservationDraft = {
   customer: {
@@ -32,6 +46,7 @@ const INITIAL_DRAFT: ReservationDraft = {
     email: "",
   },
   venueId: null,
+  date: null,
 };
 
 const stepVariants = {
@@ -53,8 +68,13 @@ export function ReservationFlow({ onExit }: ReservationFlowProps) {
   const [draft, setDraft] = useState<ReservationDraft>(INITIAL_DRAFT);
   const [step, setStep] = useState<ReservationStep>("customer");
   const [direction, setDirection] = useState<Direction>(1);
+  const [baseDate] = useState(() => new Date());
   const shouldFocusStepRef = useRef(false);
   const reduceMotion = useReducedMotion() ?? false;
+  const dates = useMemo(
+    () => generateNextCalendarDays(baseDate, 14),
+    [baseDate],
+  );
 
   const handleStepRef = useCallback((node: HTMLElement | null) => {
     if (node && shouldFocusStepRef.current) {
@@ -90,11 +110,21 @@ export function ReservationFlow({ onExit }: ReservationFlowProps) {
   function selectVenue(venueId: string) {
     setDraft((currentDraft) => ({
       ...currentDraft,
+      // Date remains selected until availability depends on the venue.
       venueId,
     }));
   }
 
-  const currentStepNumber = step === "customer" ? 1 : 2;
+  function selectDate(date: string) {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      date,
+    }));
+  }
+
+  const selectedVenue =
+    CLUB_CONFIG.venues.find((venue) => venue.id === draft.venueId) ?? null;
+  const currentStepNumber = STEP_NUMBERS[step];
   const motionContext = { direction, reduceMotion };
 
   return (
@@ -114,11 +144,7 @@ export function ReservationFlow({ onExit }: ReservationFlowProps) {
             key={step}
             ref={handleStepRef}
             tabIndex={-1}
-            aria-labelledby={
-              step === "customer"
-                ? "customer-details-title"
-                : "venue-step-title"
-            }
+            aria-labelledby={STEP_TITLE_IDS[step]}
             custom={motionContext}
             variants={stepVariants}
             initial="enter"
@@ -137,13 +163,25 @@ export function ReservationFlow({ onExit }: ReservationFlowProps) {
                 onBack={onExit}
                 onContinue={continueFromCustomer}
               />
-            ) : (
+            ) : step === "venue" ? (
               <VenueStep
-                venues={LAVALLE_CONFIG.venues}
+                venues={CLUB_CONFIG.venues}
                 selectedVenueId={draft.venueId}
                 onSelect={selectVenue}
                 onBack={() => navigateTo("customer", -1)}
+                onContinue={() => navigateTo("date", 1)}
               />
+            ) : (
+              selectedVenue && (
+                <DateStep
+                  dates={dates}
+                  referenceDate={baseDate}
+                  selectedDate={draft.date}
+                  selectedVenue={selectedVenue}
+                  onSelect={selectDate}
+                  onBack={() => navigateTo("venue", -1)}
+                />
+              )
             )}
           </motion.section>
         </AnimatePresence>

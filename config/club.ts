@@ -1,7 +1,8 @@
 import type { Venue } from "@/types/reservation";
 
-export const LAVALLE_CONFIG = {
-  // PLACEHOLDER: reemplazar por la URL real del Instagram de Lavalle Pádel.
+export const CLUB_CONFIG = {
+  name: "Argentina Pádel",
+  // PLACEHOLDER: reemplazar por la URL real del Instagram del club.
   // La URL actual abre Instagram, pero no apunta a una cuenta específica.
   instagramUrlPlaceholder: "https://www.instagram.com/",
   // PLACEHOLDER: reemplazar estos nombres por las tres sedes reales.

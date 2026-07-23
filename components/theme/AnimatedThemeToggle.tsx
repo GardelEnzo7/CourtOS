@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
+import { useTheme } from "@/components/providers/theme-provider";
 const subscribeToClient = () => () => {};
 const THEME_CHANGE_DELAY_MS = 350;
 const TOTAL_ANIMATION_MS = 850;
@@ -170,7 +170,7 @@ export function AnimatedThemeToggle() {
           animate={{
             x: reduceMotion ? 0 : actionOffset,
             scale: isAnimating && !reduceMotion ? 0.94 : 1,
-            backgroundColor: isDark ? "#f5cf67" : "#eef2f7",
+            backgroundColor: isDark ? "#eef2f7" : "#f5cf67",
           }}
           transition={{
             duration: motionDuration,
@@ -180,7 +180,7 @@ export function AnimatedThemeToggle() {
           <AnimatePresence initial={false} mode="wait">
             {isDark ? (
               <motion.span
-                key="light-action"
+                key="dark-theme"
                 initial={reduceMotion ? false : { opacity: 0, rotate: -45 }}
                 animate={{ opacity: 1, rotate: 0 }}
                 exit={
@@ -190,11 +190,14 @@ export function AnimatedThemeToggle() {
                 }
                 transition={{ duration: reduceMotion ? 0 : 0.14 }}
               >
-                <Sun className="size-[18px] text-[#6e5114]" strokeWidth={2} />
+                <Moon
+                  className="size-[17px] text-[#506078]"
+                  strokeWidth={2.2}
+                />
               </motion.span>
             ) : (
               <motion.span
-                key="dark-action"
+                key="light-theme"
                 initial={reduceMotion ? false : { opacity: 0, rotate: 45 }}
                 animate={{ opacity: 1, rotate: 0 }}
                 exit={
@@ -204,10 +207,7 @@ export function AnimatedThemeToggle() {
                 }
                 transition={{ duration: reduceMotion ? 0 : 0.14 }}
               >
-                <Moon
-                  className="size-[17px] text-[#506078]"
-                  strokeWidth={2.2}
-                />
+                <Sun className="size-[18px] text-[#6e5114]" strokeWidth={2} />
               </motion.span>
             )}
           </AnimatePresence>

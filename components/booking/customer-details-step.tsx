@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { CLUB_CONFIG } from "@/config/club";
 import type {
   CustomerDetails,
   CustomerDetailsStepProps,
@@ -100,7 +101,7 @@ export function CustomerDetailsStep({
     <div>
       <header>
         <p className="text-sm font-medium text-muted-foreground">
-          Lavalle Pádel
+          {CLUB_CONFIG.name}
         </p>
         <h2
           id="customer-details-title"
