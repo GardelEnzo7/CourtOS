@@ -3,10 +3,11 @@
 import { useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { ClubIntro } from "./club-intro";
-import { ReservationForm } from "./ReservationForm";
+import { ReservationFlow } from "@/components/booking/reservation-flow";
 
-type ExperienceView = "intro" | "form";
+import { ClubIntro } from "./club-intro";
+
+type ExperienceView = "intro" | "booking";
 type Direction = 1 | -1;
 
 type MotionContext = {
@@ -65,9 +66,8 @@ export function LandingExperience() {
           key={view}
           ref={handlePanelRef}
           tabIndex={-1}
-          aria-labelledby={
-            view === "intro" ? "club-intro-title" : "reservation-form-title"
-          }
+          aria-labelledby={view === "intro" ? "club-intro-title" : undefined}
+          aria-label={view === "booking" ? "Solicitud de reserva" : undefined}
           custom={motionContext}
           variants={panelVariants}
           initial="enter"
@@ -80,9 +80,9 @@ export function LandingExperience() {
           className="outline-none"
         >
           {view === "intro" ? (
-            <ClubIntro onSchedule={() => navigateTo("form", 1)} />
+            <ClubIntro onSchedule={() => navigateTo("booking", 1)} />
           ) : (
-            <ReservationForm onBack={() => navigateTo("intro", -1)} />
+            <ReservationFlow onExit={() => navigateTo("intro", -1)} />
           )}
         </motion.section>
       </AnimatePresence>
