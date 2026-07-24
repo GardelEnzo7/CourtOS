@@ -1,9 +1,17 @@
-import { ArrowLeft, Check } from "lucide-react";
+import { Check, MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { CLUB_CONFIG } from "@/config/club";
 import { cn } from "@/lib/utils";
-import type { VenueStepProps } from "@/types/reservation";
+import type { Venue } from "@/types/reservation";
+
+import { StepActions, StepHeader } from "./step-layout";
+
+type VenueStepProps = {
+  venues: readonly Venue[];
+  selectedVenueId: string | null;
+  onSelect: (venueId: string) => void;
+  onBack: () => void;
+  onContinue: () => void;
+};
 
 export function VenueStep({
   venues,
@@ -14,63 +22,50 @@ export function VenueStep({
 }: VenueStepProps) {
   return (
     <div>
-      <header>
-        <p className="text-sm font-medium text-muted-foreground">
-          {CLUB_CONFIG.name}
-        </p>
-        <h2
-          id="venue-step-title"
-          className="mt-1 text-2xl font-bold tracking-tight text-foreground"
-        >
-          Elegí una sede
-        </h2>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Seleccioná dónde querés jugar. Podés volver y cambiar esta opción
-          cuando lo necesites.
-        </p>
-      </header>
+      <StepHeader
+        eyebrow="Lavalle Pádel"
+        titleId="venue-step-title"
+        title="Elegí una sucursal"
+        description="Seleccioná la sede donde querés jugar. Cada una cuenta con tres canchas."
+      />
 
-      <fieldset className="mt-6 space-y-3">
-        <legend className="sr-only">Sedes disponibles</legend>
-
-        {venues.map((venue) => {
-          const isSelected = selectedVenueId === venue.id;
+      <fieldset className="mt-7 grid gap-3 sm:grid-cols-3">
+        <legend className="sr-only">Sucursales disponibles</legend>
+        {venues.map((venue, index) => {
+          const selected = selectedVenueId === venue.id;
 
           return (
-            <label key={venue.id} className="block cursor-pointer">
+            <label key={venue.id} className="relative block cursor-pointer">
               <input
                 type="radio"
                 name="venue"
                 value={venue.id}
-                checked={isSelected}
+                checked={selected}
                 onChange={() => onSelect(venue.id)}
                 className="peer sr-only"
               />
               <span
                 className={cn(
-                  "flex min-h-20 items-center justify-between gap-4 rounded-2xl border border-border bg-background px-4 py-3 text-left transition-colors peer-focus-visible:border-ring peer-focus-visible:ring-3 peer-focus-visible:ring-ring/30",
-                  isSelected && "border-primary ring-2 ring-primary/20",
+                  "flex min-h-44 flex-col rounded-2xl border border-border bg-background p-5 transition-colors hover:bg-muted/50 peer-focus-visible:border-ring peer-focus-visible:ring-3 peer-focus-visible:ring-ring/30",
+                  selected && "border-primary ring-2 ring-primary/20",
                 )}
               >
-                <span className="min-w-0">
-                  <span className="block font-semibold text-foreground">
-                    {venue.name}
+                <span className="flex items-start justify-between gap-3">
+                  <span className="flex size-11 items-center justify-center rounded-xl bg-secondary text-secondary-foreground">
+                    <MapPin aria-hidden="true" />
                   </span>
-                  {venue.description && (
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      {venue.description}
-                    </span>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    Sede {index + 1}
+                  </span>
+                </span>
+                <span className="mt-5 flex items-center justify-between gap-2 font-semibold text-foreground">
+                  {venue.name}
+                  {selected && (
+                    <Check aria-hidden="true" className="size-4 shrink-0" />
                   )}
                 </span>
-
-                <span
-                  className={cn(
-                    "inline-flex shrink-0 items-center gap-1.5 text-xs font-medium",
-                    isSelected ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  {isSelected && <Check aria-hidden="true" className="size-4" />}
-                  {isSelected ? "Seleccionada" : "Seleccionar"}
+                <span className="mt-2 text-sm leading-5 text-muted-foreground">
+                  {venue.address} · {venue.neighborhood}
                 </span>
               </span>
             </label>
@@ -78,25 +73,11 @@ export function VenueStep({
         })}
       </fieldset>
 
-      <div className="mt-7 grid grid-cols-2 gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="h-12 rounded-xl text-base"
-        >
-          <ArrowLeft aria-hidden="true" />
-          Volver
-        </Button>
-        <Button
-          type="button"
-          disabled={!selectedVenueId}
-          onClick={onContinue}
-          className="h-12 rounded-xl text-base"
-        >
-          Continuar
-        </Button>
-      </div>
+      <StepActions
+        onBack={onBack}
+        onContinue={onContinue}
+        continueDisabled={!selectedVenueId}
+      />
     </div>
   );
 }

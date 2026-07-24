@@ -1,40 +1,37 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { CLUB_CONFIG } from "@/config/club";
+import { MVP_CONFIG } from "@/config/mvp";
 
 import { Logo } from "./Logo";
 
-type ClubIntroProps = {
+type BookingIntroProps = {
   onSchedule: () => void;
 };
 
 const bookingSteps = [
-  "Completá tus datos",
-  "Elegí sede, fecha y horario",
-  "Recibí la confirmación del club",
+  "Completá tus datos y elegí sucursal",
+  "Elegí fecha y un horario con lugar",
+  "Seleccioná cancha y pagá la seña",
 ];
 
-export function ClubIntro({ onSchedule }: ClubIntroProps) {
+export function BookingIntro({ onSchedule }: BookingIntroProps) {
   return (
-    <div className="text-center">
+    <div className="mx-auto max-w-lg text-center">
       <header className="flex flex-col items-center">
         <Logo />
-
         <p className="mt-4 text-sm font-medium tracking-wide text-muted-foreground">
-          {CLUB_CONFIG.name}
+          CourtOS
         </p>
-
         <h1
-          id="club-intro-title"
+          id="booking-intro-title"
           className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
         >
           Tu próximo partido empieza acá.
         </h1>
-
         <p className="mt-4 max-w-md text-pretty text-base leading-7 text-muted-foreground">
-          Vas a poder elegir sede, fecha y horario. Después, el club revisará
-          tu solicitud y te confirmará el turno.
+          Completá tus datos, mirá cuántas canchas quedan libres en cada
+          horario y confirmá tu turno pagando la seña.
         </p>
       </header>
 
@@ -65,20 +62,19 @@ export function ClubIntro({ onSchedule }: ClubIntroProps) {
           Agendar turno
           <ArrowRight aria-hidden="true" />
         </Button>
-
         <a
-          href={CLUB_CONFIG.instagramUrlPlaceholder}
+          href={MVP_CONFIG.instagramUrlPlaceholder}
           target="_blank"
           rel="noreferrer"
           className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 text-base font-medium text-foreground transition-colors hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
         >
           <ExternalLink aria-hidden="true" className="size-4" />
-          Conocer el club
+          Conocer CourtOS
         </a>
       </div>
 
       <p className="mt-5 text-xs text-muted-foreground">
-        Solicitud sujeta a confirmación del club
+        Disponibilidad simulada para demostración del MVP
       </p>
     </div>
   );

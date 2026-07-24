@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { CLUB_CONFIG } from "@/config/club";
+import { MVP_CONFIG } from "@/config/mvp";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -19,8 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `Reservas | ${CLUB_CONFIG.name} · CourtOS`,
-  description: `Solicitá tu reserva de cancha en ${CLUB_CONFIG.name} de forma rápida y simple con CourtOS.`,
+  title: `Reservas de pádel | ${MVP_CONFIG.name}`,
+  description:
+    "Elegí sucursal, fecha, horario y cancha para solicitar tu próxima reserva de pádel con CourtOS.",
   applicationName: "CourtOS",
 };
 

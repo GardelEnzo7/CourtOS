@@ -1,54 +1,87 @@
 export type CustomerDetails = {
-  name: string;
+  firstName: string;
+  lastName: string;
   phone: string;
-  email: string;
 };
-
-export type ReservationDraft = {
-  customer: CustomerDetails;
-  venueId: string | null;
-  date: string | null;
-};
-
-export type ReservationStep = "customer" | "venue" | "date";
 
 export type CustomerField = keyof CustomerDetails;
 
 export type Venue = {
   id: string;
   name: string;
-  description?: string;
+  address: string;
+  neighborhood: string;
 };
 
-export type CustomerDetailsStepProps = {
-  value: CustomerDetails;
-  onChange: (field: CustomerField, value: string) => void;
-  onBack: () => void;
-  onContinue: (customer: CustomerDetails) => void;
+export type CourtSurface = "Césped sintético" | "Césped panorámico";
+
+export type Court = {
+  id: string;
+  venueId: string;
+  name: string;
+  surface: CourtSurface;
+  indoor: boolean;
+  basePrice: number;
 };
 
-export type VenueStepProps = {
+export type TimeSlotStatus = "available" | "occupied";
+
+export type TimeSlot = {
+  id: string;
+  courtId: string;
+  startsAt: string;
+  durationMinutes: number;
+  price: number;
+  status: TimeSlotStatus;
+};
+
+export type TimeOption = {
+  startsAt: string;
+  availableCourtCount: number;
+  totalCourtCount: number;
+};
+
+export type ReservationDraft = {
+  customer: CustomerDetails;
+  venueId: string | null;
+  date: string | null;
+  startsAt: string | null;
+  courtId: string | null;
+};
+
+export type ReservationStep =
+  | "customer"
+  | "venue"
+  | "date"
+  | "time"
+  | "court"
+  | "summary"
+  | "proof";
+
+export type ReservationRecord = {
+  number: string;
+  createdAt: string;
+  status: "pending";
+  draft: ReservationDraft;
+};
+
+export type PaymentBreakdown = {
+  total: number;
+  deposit: number;
+  balance: number;
+};
+
+export type ReservationCatalog = {
   venues: readonly Venue[];
-  selectedVenueId: string | null;
-  onSelect: (venueId: string) => void;
-  onBack: () => void;
-  onContinue: () => void;
+  courts: readonly Court[];
 };
 
-export type DateStepProps = {
-  dates: readonly Date[];
-  referenceDate: Date;
-  selectedDate: string | null;
-  selectedVenue: Venue;
-  onSelect: (date: string) => void;
-  onBack: () => void;
+export type ReservationFlowProps = {
+  onExit: () => void;
 };
 
 export type ReservationProgressProps = {
   currentStep: number;
   totalSteps: number;
-};
-
-export type ReservationFlowProps = {
-  onExit: () => void;
+  label: string;
 };

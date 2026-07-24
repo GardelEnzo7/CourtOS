@@ -16,6 +16,12 @@ const fullDateFormatter = new Intl.DateTimeFormat(ES_AR_LOCALE, {
   year: "numeric",
 });
 
+const numericDateFormatter = new Intl.DateTimeFormat(ES_AR_LOCALE, {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
 function capitalize(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
@@ -65,6 +71,14 @@ export function formatDayAndMonth(date: Date) {
 
 export function formatFullDate(date: Date) {
   return fullDateFormatter.format(date);
+}
+
+export function formatDateKey(dateKey: string) {
+  return formatFullDate(new Date(`${dateKey}T12:00:00`));
+}
+
+export function formatNumericDateKey(dateKey: string) {
+  return numericDateFormatter.format(new Date(`${dateKey}T12:00:00`));
 }
 
 export function isToday(date: Date, referenceDate: Date) {

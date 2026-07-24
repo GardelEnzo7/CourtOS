@@ -3,6 +3,7 @@ import type { ReservationProgressProps } from "@/types/reservation";
 export function ReservationProgress({
   currentStep,
   totalSteps,
+  label,
 }: ReservationProgressProps) {
   const progress = (currentStep / totalSteps) * 100;
 
@@ -10,7 +11,7 @@ export function ReservationProgress({
     <div>
       <div className="flex items-center justify-between gap-4 text-sm">
         <span className="font-medium text-foreground">
-          Solicitud de reserva
+          {label}
         </span>
         <span className="text-muted-foreground">
           Paso {currentStep} de {totalSteps}

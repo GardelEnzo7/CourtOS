@@ -1,12 +1,12 @@
 import Image from "next/image";
 
-import { CLUB_CONFIG } from "@/config/club";
+import { MVP_CONFIG } from "@/config/mvp";
 
 export function Logo() {
   return (
     <Image
       src="/logo.webp"
-      alt={`Logo de ${CLUB_CONFIG.name}`}
+      alt={MVP_CONFIG.name}
       className="rounded-full"
       width={90}
       height={90}

@@ -9,7 +9,7 @@ export function Hero() {
         <AnimatedThemeToggle />
       </div>
 
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-3xl">
         <LandingExperience />
       </div>
     </main>

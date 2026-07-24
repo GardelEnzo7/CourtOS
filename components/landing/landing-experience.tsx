@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import { ReservationFlow } from "@/components/booking/reservation-flow";
 
-import { ClubIntro } from "./club-intro";
+import { BookingIntro } from "./booking-intro";
 
 type ExperienceView = "intro" | "booking";
 type Direction = 1 | -1;
@@ -55,7 +55,7 @@ export function LandingExperience() {
     <div
       aria-live="polite"
       aria-atomic="true"
-      className="w-full overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
+      className="w-full overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-8"
     >
       <AnimatePresence
         initial={false}
@@ -66,7 +66,7 @@ export function LandingExperience() {
           key={view}
           ref={handlePanelRef}
           tabIndex={-1}
-          aria-labelledby={view === "intro" ? "club-intro-title" : undefined}
+          aria-labelledby={view === "intro" ? "booking-intro-title" : undefined}
           aria-label={view === "booking" ? "Solicitud de reserva" : undefined}
           custom={motionContext}
           variants={panelVariants}
@@ -80,7 +80,7 @@ export function LandingExperience() {
           className="outline-none"
         >
           {view === "intro" ? (
-            <ClubIntro onSchedule={() => navigateTo("booking", 1)} />
+            <BookingIntro onSchedule={() => navigateTo("booking", 1)} />
           ) : (
             <ReservationFlow onExit={() => navigateTo("intro", -1)} />
           )}
